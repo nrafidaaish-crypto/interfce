@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Notifikasi Cute v2 🌸</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 28px 16px;
+    font-family: "Comic Sans MS", "Quicksand", "Nunito", system-ui, sans-serif;
+    color: #8a4a62;
+    background: linear-gradient(160deg, #fff5f8, #ffe0ea);
+    display: flex;
+    justify-content: center;
+  }
+
+  .wrap { width: 100%; max-width: 520px; }
+
+  .judul { text-align: center; margin-bottom: 18px; }
+  .judul h1 { margin: 0; font-size: 28px; color: #ff7fa8; }
+  .judul p { margin: 6px 0 0; }
+
+  .kartu {
+    background: #ffffff;
+    border: 3px dashed #ffc4d6;
+    border-radius: 24px;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 10px 26px rgba(255, 148, 180, 0.28);
+  }
+
+  .kartu h2 { margin: 0 0 12px; font-size: 20px; color: #ff7fa8; }
+
+  label.teks { display: block; font-weight: bold; margin: 0 0 6px; }
+
+  textarea, input[type="text"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #ffc4d6;
+    border-radius: 16px;
+    background: #fff5f8;
+    color: #8a4a62;
+    font-family: inherit;
+    font-size: 16px;
+    outline: none;
+  }
+
+  textarea { min-height: 90px; resize: vertical; }
+
+  textarea:focus, input[type="text"]:focus {
+    border-color: #ff7fa8;
+    box-shadow: 0 0 0 4px rgba(255, 127, 168, 0.2);
+  }
+
+  .saluran {
+    background: #fff0f5;
+    border-radius: 18px;
+    padding: 12px 14px;
+    margin-top: 12px;
+  }
+
+  .saluran label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .saluran input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #ff7fa8;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 18px;
+    padding: 13px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ffb6cd, #ff7fa8);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(255, 127, 168, 0.45);
+  }
+
+  button:active { transform: scale(0.98); }
+
+  #log { list-style: none; margin: 0; padding: 0; }
+
+  #log li {
+    background: #ffe4ec;
+    border-radius: 14px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    word-break: break-word;
+  }
+
+  #log li.error { background: #ffd9d9; color: #a13a4a; }
+
+  .kaki { text-align: center; font-size: 13px; opacity: 0.8; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="judul">
+      <h1>🌸 Pusat Notifikasi 🌸</h1>
+      <p>Kirim lewat Email, WhatsApp, atau SMS ✨</p>
+    </div>
+
+    <form id="form" class="kartu">
+      <label class="teks" for="pesan">💌 Pesan</label>
+      <textarea id="pesan" placeholder="Tulis pesanmu di sini..."></textarea>
+
+      <div class="saluran">
+        <label><input type="checkbox" name="saluran" value="email" checked /> 📧 Email</label>
+        <input type="text" id="tujuan-email" placeholder="nama@email.com" />
+      </div>
+
+      <div class="saluran">
+        <label><input type="checkbox" name="saluran" value="whatsapp" /> 💬 WhatsApp</label>
+        <input type="text" id="tujuan-whatsapp" placeholder="628123456789" />
+      </div>
+
+      <div class="saluran">
+        <label><input type="checkbox" name="saluran" value="sms" /> 📱 SMS</label>
+        <input type="text" id="tujuan-sms" placeholder="628123456789" />
+      </div>
+
+      <button type="submit">Kirim Notifikasi 💖</button>
+    </form>
+
+    <div class="kartu">
+      <h2>🎀 Riwayat Pengiriman</h2>
+      <ul id="log"></ul>
+    </div>
+
+    <div class="kaki">Dibuat dengan 💗 | Demo OOP: kelas abstrak &amp; polimorfisme</div>
+  </div>
+
+<script>
+  class Notifikasi {
+    constructor(penerima, pesan) {
+      if (new.target === Notifikasi) {
+        throw new Error("Notifikasi adalah kelas abstrak.");
+      }
+      this.penerima = penerima;
+      this.pesan = pesan;
+    }
+    kirim() {
+      throw new Error("Method kirim() harus diimplementasikan subclass.");
+    }
+  }
+
+  class EmailNotifikasi extends Notifikasi {
+    kirim() {
+      if (!this.penerima.includes("@")) throw new Error("Alamat email tidak valid.");
+      return '📧 Email terkirim ke ' + this.penerima + ': "' + this.pesan + '"';
+    }
+  }
+
+  class WhatsAppNotifikasi extends Notifikasi {
+    kirim() {
+      if (!/^\+?\d{9,15}$/.test(this.penerima)) throw new Error("Nomor WhatsApp tidak valid.");
+      return '💬 WhatsApp terkirim ke ' + this.penerima + ': "' + this.pesan + '"';
+    }
+  }
+
+  class SMSNotifikasi extends Notifikasi {
+    kirim() {
+      if (!/^\+?\d{9,15}$/.test(this.penerima)) throw new Error("Nomor SMS tidak valid.");
+      var teks = this.pesan.length > 160 ? this.pesan.slice(0, 157) + "..." : this.pesan;
+      return '📱 SMS terkirim ke ' + this.penerima + ': "' + teks + '"';
+    }
+  }
+
+  var daftar = { email: EmailNotifikasi, whatsapp: WhatsAppNotifikasi, sms: SMSNotifikasi };
+  var form = document.getElementById("form");
+  var log = document.getElementById("log");
+
+  function tambahLog(teks, error) {
+    var li = document.createElement("li");
+    li.textContent = teks;
+    if (error) li.className = "error";
+    log.insertBefore(li, log.firstChild);
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var pesan = document.getElementById("pesan").value.trim();
+    var dipilih = form.querySelectorAll("input[name=saluran]:checked");
+
+    if (!pesan || dipilih.length === 0) {
+      tambahLog("⚠️ Isi pesan dan pilih minimal satu saluran ya.", true);
+      return;
+    }
+
+    dipilih.forEach(function (cb) {
+      var jenis = cb.value;
+      var tujuan = document.getElementById("tujuan-" + jenis).value.trim();
+      try {
+        var notif = new daftar[jenis](tujuan, pesan);
+        tambahLog(notif.kirim(), false);
+      } catch (err) {
+        tambahLog("❌ " + jenis.toUpperCase() + ": " + err.message, true);
+      }
+    });
+  });
+</script>
+</body>
+</html>
